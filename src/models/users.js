@@ -7,11 +7,12 @@ const UserSchema = mongoose.Schema({
   },
   email: {
     type: String,
-    required: false,
+    required: true,
+    unique:true
   },
   password: {
     type: String,
-    required: false,
+    required: true,
   },
   contact: {
     type: Number,
@@ -23,9 +24,11 @@ const UserSchema = mongoose.Schema({
   },
   profileimage: {
     type: String,
+    default: "",
     required: false,
   },
   coverimage: {
+    default: "",
     type: String,
     required: false,
   },

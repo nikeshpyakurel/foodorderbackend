@@ -12,6 +12,7 @@ const ProductSchema = mongoose.Schema({
   categoryid: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
+    ref:"Category"
   },
   image: {
     type: String,
@@ -23,7 +24,6 @@ const ProductSchema = mongoose.Schema({
   },
   available: {
     type: Boolean,
-    default: true,
     required: true,
   },
 });

@@ -1,12 +1,11 @@
 const express = require("express");
-const { Router } = express;
-const bcrypt = require("bcryptjs");
-const router = new Router();
-const AdminUser = require("../models/admin");
 const adminController = require("../controllers/adminController");
 
-router.post("/login", adminController.adminLogin);
+const { Router } = express;
+const router = new Router();
 
-router.post("/register", adminController.adminRegister);
+router.post("/login", adminController.login);
+router.post("/register", adminController.register);
+
 
 module.exports = router;

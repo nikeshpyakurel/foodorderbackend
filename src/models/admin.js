@@ -7,11 +7,26 @@ const AdminUserSchema = mongoose.Schema({
   },
   email: {
     type: String,
-    required: false,
+    required: true,
   },
   password: {
     type: String,
+    required: true,
+  },
+  address: {
+    type: String,
     required: false,
+    default: "",
+  },
+  phoneno: {
+    type: Number,
+    required: false,
+    default: 0000000000,
+  },
+  logo: {
+    type: String,
+    required: false,
+    default: "",
   },
 });
 

@@ -8,5 +8,7 @@ router
   .route("/")
   .get(categoryController.getCategories)
   .post(categoryController.addCategory);
-
+router.post("/update", categoryController.updateCategories);
+router.get("/delete", categoryController.deleteCategory);
+router.post("/update/coverimage", categoryController.updateCategoryCoverImage);
 module.exports = router;
