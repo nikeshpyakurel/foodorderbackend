@@ -32,7 +32,7 @@ const addProduct = (req, res) => {
       const toAddProduct = new Product({
         title: product.title,
         image: product.image ? `uploads/products/${product.title}.png` : "",
-        description: product.desciption ?? "",
+        description: product.desciption ? product.desciption : "",
         price: product.price,
         categoryid: product.categoryid,
         available: true,
