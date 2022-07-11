@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const { Router } = express;
+const router = new Router();
 
 //importing routes
 const categoryRoutes = require("./routers/categoryRoutes");
@@ -22,6 +24,7 @@ usingCustomRouter("/banners", bannerRoutes);
 usingCustomRouter("/auth/admin", adminRoutes);
 usingCustomRouter("/user", userRoutes);
 usingCustomRouter("/product", productRoutes);
+usingCustomRouter("/",(_,res)=>{res.send("hello")})
 
 //Listening Server to Port
 server.listen(420, () => {
