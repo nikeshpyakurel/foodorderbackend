@@ -9,6 +9,7 @@ const adminRoutes = require("./routers/adminRoutes");
 const productRoutes = require("./routers/productRoutes");
 const userRoutes = require("./routers/userRoutes");
 const bannerRoutes = require("./routers/bannerRoutes");
+const orderRoutes = require("./routers/orderRotes");
 const dbConnection = require("./utils/dbConnection");
 
 //creating express server object
@@ -24,12 +25,11 @@ usingCustomRouter("/banners", bannerRoutes);
 usingCustomRouter("/auth/admin", adminRoutes);
 usingCustomRouter("/user", userRoutes);
 usingCustomRouter("/product", productRoutes);
-usingCustomRouter("/",(_,res)=>{res.send("hello")})
+usingCustomRouter("/orders", orderRoutes);
 
 //Listening Server to Port
 server.listen(420, () => {
   console.log("server started on port 420");
-  //MongoDB Connection
   dbConnection.connect();
 });
 

@@ -5,11 +5,16 @@ const OrderSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
-  productid: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Product",
-  },
+  products: [
+    {
+      product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+      quantity:Number
+    },
+  ],
   userid: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
@@ -23,6 +28,10 @@ const OrderSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  createdat: {
+    type: Date,
+    default:  new Date()
+}
 });
 
 module.exports = mongoose.model("Order", OrderSchema);
