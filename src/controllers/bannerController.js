@@ -33,6 +33,7 @@ const addBanner = (req, res) => {
     );
     Banners({
       title: banner.title,
+      enabled:true,
       bannerimage: banner.bannerimage
         ? `uploads/banners/${banner.title}.png`
         : "",

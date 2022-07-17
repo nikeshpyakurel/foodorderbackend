@@ -146,7 +146,6 @@ const updateUserProfileImage = async (req, res) => {
       { profileimage: `uploads/users/${req.query.id}-profileimage.png` },
       { new: true },
       (err, user) => {
-        console.log(err);
         if (user) {
           res.json({
             status: 1,
