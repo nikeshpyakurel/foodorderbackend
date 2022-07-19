@@ -20,7 +20,7 @@ const addCategory = (req, res) => {
   if (category.coverimage) {
     let base64Image = category.coverimage.split(";base64,").pop();
     fs.writeFile(
-      `uploads/categories/${category.name}.png`,
+      `./public/assets/${category.name}-category${Date()}.png`,
       base64Image,
       { encoding: "base64" },
       function (err) {
@@ -30,7 +30,7 @@ const addCategory = (req, res) => {
     Category({
       name: category.name,
       coverimage: category.coverimage
-        ? `uploads/categories/${category.name}.png`
+        ? `/public/assets/${category.name}-category${Date()}.png`
         : "",
     })
       .save()
@@ -88,16 +88,16 @@ const updateCategoryCoverImage = async (req, res) => {
   if (req.body.coverimage && id) {
     let base64Image = req.body.coverimage.split(";base64,").pop();
     fs.writeFile(
-      `uploads/categories/${req.body.name}.png`,
-      base64Image,
+    `./public/assets/${id}-category${Date()}.png`,
+    base64Image,
       { encoding: "base64" },
       function (err) {
         console.log(err);
       }
     );
     Category.findOneAndUpdate(
-      id,
-      { coverimage: req.body.coverimage },
+      {_id:id},
+      { coverimage: `./public/assets/${id}-category${Date()}.png` },
       { new: true },
       (err, category) => {
         console.log(category);

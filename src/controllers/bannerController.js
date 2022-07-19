@@ -24,7 +24,7 @@ const addBanner = (req, res) => {
   if (banner.bannerimage) {
     let base64Image = banner.bannerimage.split(";base64,").pop();
     fs.writeFile(
-      `uploads/banners/${banner.title}.png`,
+      `./public/assets/${banner.title}-banner${Date()}.png`,
       base64Image,
       { encoding: "base64" },
       function (err) {
@@ -33,9 +33,8 @@ const addBanner = (req, res) => {
     );
     Banners({
       title: banner.title,
-      enabled:true,
       bannerimage: banner.bannerimage
-        ? `uploads/banners/${banner.title}.png`
+        ? `./public/assets/${banner.title}-banner${Date()}.png`
         : "",
     })
       .save()

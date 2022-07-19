@@ -15,7 +15,7 @@ const UserSchema = mongoose.Schema({
     required: true,
   },
   contact: {
-    type: Number,
+    type: String,
     required: true,
   },
   address: {
@@ -24,13 +24,16 @@ const UserSchema = mongoose.Schema({
   },
   profileimage: {
     type: String,
-    default: "",
     required: false,
+    
+  
   },
   coverimage: {
-    default: "",
+
     type: String,
     required: false,
+    
+  
   },
 });
 

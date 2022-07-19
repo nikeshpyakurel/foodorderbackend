@@ -22,7 +22,7 @@ const addProduct = (req, res) => {
     let base64Image = product.image.split(";base64,").pop();
     if (product.title && product.price && product.categoryid) {
       fs.writeFile(
-        `uploads/products/${product.title}.png`,
+        `./public/assets/${product.title}-product.png`,
         base64Image,
         { encoding: "base64" },
         function (err) {
