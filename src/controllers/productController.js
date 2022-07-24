@@ -22,7 +22,7 @@ const addProduct = (req, res) => {
     let base64Image = product.image.split(";base64,").pop();
     if (product.title && product.price && product.categoryid) {
       fs.writeFile(
-        `uploads/products/${product.title}.png`,
+        `./public/assets/${product.title}-product${new Date()}.png`,
         base64Image,
         { encoding: "base64" },
         function (err) {
@@ -31,7 +31,7 @@ const addProduct = (req, res) => {
       );
       const toAddProduct = new Product({
         title: product.title,
-        image: product.image ? `uploads/products/${product.title}.png` : "",
+        image: product.image ? `public/assets/${product.title}-product${new Date()}.png` : "",
         description: product.desciption ? product.desciption : "",
         price: product.price,
         categoryid: product.categoryid,
@@ -41,7 +41,7 @@ const addProduct = (req, res) => {
         res.send({
           status: 1,
           message: "products Added",
-          data: true,
+          data: true
         });
       }
     } else {
@@ -63,25 +63,30 @@ const addProduct = (req, res) => {
 const deleteProduct = (req, res) => {
   let id = req.query.id;
   if (id) {
-    Product.findOneAndDelete({ _id: id }, (err) => {
-      if (!err) {
-        res.json({
-          status: 1,
-          message: "Product Deleted",
-          data: true,
-        });
-      } else {
-        res.json({
-          status: 4,
-          message: `${err}`,
-          data: true,
-        });
-      }
-    });
+      Product.findOneAndUpdate(
+            { _id: id },
+            { isdeleted:true },
+            { new: true },
+            (err, product) => {
+              if (product) {
+                res.json({
+                  status: 1,
+                  message: "Product Image deleted",
+                  data: true,
+                });
+              } else {
+                res.json({
+                  status: 4,
+                  message: err.message,
+                  data: false,
+                });
+              }
+            }
+          );
   } else {
     res.send({
       status: 4,
-      message: "Add Product Image",
+      message: "Provide Product Id",
       data: false,
     });
   }
@@ -92,7 +97,7 @@ const updateProductImage = async (req, res) => {
   if (req.body.image && id) {
     let base64Image = req.body.image.split(";base64,").pop();
     fs.writeFile(
-      `uploads/products/${req.body.name}-id.png`,
+      `./public/assets/${product.title}-product${new Date()}.png`,
       base64Image,
       { encoding: "base64" },
       function (err) {
@@ -100,7 +105,7 @@ const updateProductImage = async (req, res) => {
         if (err == null) {
           Product.findOneAndUpdate(
             { _id: id },
-            { image: `uploads/products/${req.body.name}-id.png` },
+            { image: `public/assets/${product.title}-product${new Date()}.png` },
             { new: true },
             (err, product) => {
               if (product) {

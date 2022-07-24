@@ -4,8 +4,9 @@ const AdminUser = require("../models/admin");
 const adminLogin = async (req, res) => {
   const body = req.body;
   const isadmin = await AdminUser.findOne({ email: body.email });
-  if (isadmin) {
-    const passwordMatched = await bcrypt.compare(
+  try {
+      if (isadmin) {
+      const passwordMatched = await bcrypt.compare(
       body.password,
       isadmin.password
     );
@@ -25,6 +26,13 @@ const adminLogin = async (req, res) => {
     res.json({
       status: 4,
       message: "User not found",
+    });
+  }
+  } catch (e) {
+      console.log(e);
+        res.json({
+      status: 4,
+      message: e,
     });
   }
 };

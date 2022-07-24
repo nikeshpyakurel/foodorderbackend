@@ -9,5 +9,7 @@ router.get("/", orderController.getOrderById);
 router.get("/user", orderController.getUserOrders);
 router.post("/placeorder", orderController.createOrder);
 router.get("/orderstatus", orderController.chagneOrderStatus);
+router.get("/deleteall", orderController.deleteAllorders);
+
 
 module.exports = router;

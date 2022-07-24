@@ -3,30 +3,27 @@ const mongoose = require("mongoose");
 const AdminUserSchema = mongoose.Schema({
   displayname: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
-    required: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   address: {
     type: String,
-    required: false,
-    default: "",
+    required: false
   },
   phoneno: {
-    type: Number,
+    type: String,
     required: false,
-    default: 0000000000,
   },
   logo: {
     type: String,
-    required: false,
-    default: "",
+    required: false
   },
 });
 
