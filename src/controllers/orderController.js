@@ -19,6 +19,14 @@ const getOrders = (req, res) => {
     });
 };
 
+const deleteAllorders = (req,res)=>{
+  Order.deleteMany({}).then(function(){
+    res.send({message:'deleted'});
+    }).catch(function(error){
+     res.send({message:error});
+    });
+}
+
 const getOrderById = (req, res) => {
   let id = req.query.id;
   if (id) {
@@ -139,4 +147,5 @@ module.exports = {
   createOrder,
   getUserOrders,
   chagneOrderStatus,
+  deleteAllorders
 };

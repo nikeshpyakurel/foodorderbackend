@@ -26,6 +26,10 @@ const ProductSchema = mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  isdeleted:{
+      type:Boolean,
+      default:false
+  }
 });
 
 module.exports = mongoose.model("Product", ProductSchema);
