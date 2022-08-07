@@ -37,6 +37,8 @@ const getUsersById = async (req, res) => {
 };
 
 const userLogin = async (req, res) => {
+  console.log(req.body);
+
   const body = req.body;
   if (body.email && body.password) {
     try {
@@ -79,15 +81,22 @@ const userLogin = async (req, res) => {
 };
 
 const userRegister = async (req, res) => {
+  console.log(req.body);
   const saltRounds = 10;
   const body = req.body;
   const hashedpassword = await bcrypt.hash(body.password, saltRounds);
   const emailexist = await Users.findOne({ email: body.email });
-  const contactexist = await Users.findOne({ email: body.email });
-  if (emailexist || contactexist) {
+  const contactexist = await Users.findOne({ email: body.contact });
+  if (emailexist) {
     return res.json({
       status: 4,
       message: "Email already exists",
+      data: false,
+    });
+  } else if (contactexist) {
+    return res.json({
+      status: 4,
+      message: "Contact already exists",
       data: false,
     });
   } else {
@@ -131,29 +140,77 @@ const userRegister = async (req, res) => {
 const updateUserProfileImage = async (req, res) => {
   let id = req.query.id;
   console.log(id);
+  console.log(req.body.profileimage);
+  var date = new Date();
   if (req.body.profileimage && id) {
-    let base64Image = req.body.profileimage.split(";base64,").pop();
-    fs.writeFile(
-      `uploads/users/${req.query.id}-profileimage.png`,
-      base64Image,
-      { encoding: "base64" },
-      function (err) {
-        console.log(err);
-      }
-    );
-    Users.findOneAndUpdate(
-      id,
-      { profileimage: `uploads/users/${req.query.id}-profileimage.png` },
+    try {
+      let base64Image = req.body.profileimage.split(";base64,").pop();
+      fs.writeFile(
+        `./public/assets/${req.query.id}-profileimage${date}.png`,
+        base64Image,
+        { encoding: "base64" },
+        function (err) {
+          console.log(err);
+        }
+      );
+      Users.findOneAndUpdate(
+        { _id: id },
+        {
+          profileimage: `./public/assets/${req.query.id}-profileimage${date}.png`,
+        },
+        { new: true },
+        (err, user) => {
+          if (user) {
+            res.json({
+              status: 1,
+              message: "User ProfileImage Updated",
+              data: true,
+            });
+          } else {
+            res.json({
+              status: 4,
+              message: err.message,
+              data: false,
+            });
+          }
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      res.send({ status: 4, message: err.message });
+    }
+  } else {
+    res.json({
+      status: 4,
+      message: "Provide User Id in params and profileimage in base64",
+      data: true,
+    });
+  }
+};
+
+const updateUserDetails = async (req, res) => {
+  let id = req.query.id;
+  let detail = req.body;
+  if (id) {
+    Users.findByIdAndUpdate(
+      { _id: id },
+      {
+        name: detail.name,
+        email: detail.email,
+        address: detail.address,
+        contact: detail.contact,
+      },
       { new: true },
       (err, user) => {
-        if (user) {
-          res.json({
+        if ((err, user)) {
+          res.send({
             status: 1,
-            message: "User ProfileImage Updated",
+            message: "User Data Updated",
             data: true,
           });
-        } else {
-          res.json({
+        }
+        if (err) {
+          res.send({
             status: 4,
             message: err.message,
             data: false,
@@ -162,10 +219,10 @@ const updateUserProfileImage = async (req, res) => {
       }
     );
   } else {
-    res.json({
+    res.send({
       status: 4,
-      message: "Provide User Id in params and profileimage in base64",
-      data: true,
+      message: "Send User Id as query params",
+      data: false,
     });
   }
 };
@@ -176,4 +233,5 @@ module.exports = {
   updateUserProfileImage,
   getUsers,
   getUsersById,
+  updateUserDetails,
 };

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 function connect() {
   mongoose
-    .connect("mongodb://127.0.0.1:27017/resturantapp", {
+    .connect("mongodb+srv://pieonion:db%40pieonion@pieonion.rylv00g.mongodb.net/pieonion", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })

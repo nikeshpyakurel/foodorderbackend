@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserSchema = mongoose.Schema({
+const RiderSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -17,6 +17,7 @@ const UserSchema = mongoose.Schema({
   contact: {
     type: String,
     required: true,
+    unique: true,
   },
   address: {
     type: String,
@@ -27,11 +28,6 @@ const UserSchema = mongoose.Schema({
     default: "",
     required: false,
   },
-  coverimage: {
-    default: "",
-    type: String,
-    required: false,
-  },
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("Rider", RiderSchema);
