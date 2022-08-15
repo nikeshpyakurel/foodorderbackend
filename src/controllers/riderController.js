@@ -1,6 +1,20 @@
 const bcrypt = require("bcryptjs");
 const Rider = require("../models/riders");
 
+const getAllRiders = async(req,res)=>{
+  Rider.find()
+  .then(function (banners) {
+    res.send({
+      data: banners,
+      status: 1,
+      message: "All Riders",
+    });
+  })
+  .catch(function (e) {
+    res.send(e);
+  });
+}
+
 const riderLogin = async (req, res) => {
   const body = req.body;
   const isRider = await Rider.findOne({ email: body.email });
@@ -49,20 +63,45 @@ const riderRegister = async (req, res) => {
     });
   } else {
     const riderData = new Rider({
-      name: body.displayname,
+      name: body.name,
       email: body.email,
       password: hashedpassword,
       contact: body.contact,
     }).save();
-
     if (riderData) {
+      console.log(riderData);
       res.json({
         status: 1,
         message: "Rider Added",
         data: true,
       });
     }
+    else {
+      res.json({
+        status: 4,
+        message: "Something went wrong",
+        data: false,
+      })}
   }
 };
 
-module.exports = { login: riderLogin, register: riderRegister};
+const deleteRider = (req, res) => {
+  let id = req.query.id;
+   Rider.findOneAndDelete({ _id: id }, (err) => {
+      if (!err) {
+        res.json({
+          status: 1,
+          message: "Rider Deleted",
+          data: true,
+        });
+      } else {
+        res.json({
+          status: 4,
+          message: `${err}`,
+          data: true,
+        });
+      }
+    });
+};
+
+module.exports = { login: riderLogin, register: riderRegister,all:getAllRiders,delete:deleteRider};

@@ -20,6 +20,10 @@ const OrderSchema = mongoose.Schema({
     required: true,
     ref: "User",
   },
+  riderid: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Rider",
+  },
   status: {
     type: Number,
     required: true,

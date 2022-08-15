@@ -28,6 +28,11 @@ const AdminUserSchema = mongoose.Schema({
     required: false,
     default: "",
   },
+  devicetoken: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 module.exports = mongoose.model("AdminUser", AdminUserSchema);

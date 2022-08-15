@@ -20,7 +20,7 @@ const addCategory = (req, res) => {
   if (category.coverimage) {
     let base64Image = category.coverimage.split(";base64,").pop();
     fs.writeFile(
-      `uploads/categories/${category.name}.png`,
+      `uploads/${category.name.replace(" ", '-').toLowerCase()}-category.png`,
       base64Image,
       { encoding: "base64" },
       function (err) {
@@ -29,8 +29,9 @@ const addCategory = (req, res) => {
     );
     Category({
       name: category.name,
+      isdeleted: false,
       coverimage: category.coverimage
-        ? `uploads/categories/${category.name}.png`
+        ? `/uploads/${category.name.replace(" ", '-').toLowerCase()}-category.png`
         : "",
     })
       .save()
@@ -50,7 +51,7 @@ const addCategory = (req, res) => {
 
 const updateCategories = async (req, res) => {
   let id = req.query.id;
-  console.log(id,req.body.name);
+  console.log(id, req.body.name);
   if (id && req.body.name) {
     try {
       Category.findOneAndUpdate(
@@ -84,27 +85,59 @@ const updateCategories = async (req, res) => {
 };
 
 const updateCategoryCoverImage = async (req, res) => {
+  // let id = req.query.id;
+  // if (req.body.coverimage && id) {
+  //   let base64Image = req.body.coverimage.split(";base64,").pop();
+  //   fs.writeFile(
+  //     `uploads/categories/${req.body.name}.png`,
+  //     base64Image,
+  //     { encoding: "base64" },
+  //     function (err) {
+  //       console.log(err);
+  //     }
+  //   );
+  //   Category.findOneAndUpdate(
+  //     id,
+  //     { coverimage: `/uploads/categories/${req.body.name}.png` },
+  //     { new: true },
+  //     (err, category) => {
+  //       console.log(category);
+  //       if (!err) {
+  //         res.json({
+  //           status: 1,
+  //           message: "Category Coverimage Updated",
+  //           data: true,
+  //         });
+  //       } else {
+  //         res.json({
+  //           status: 4,
+  //           message: err.message,
+  //           data: false,
+  //         });
+  //       }
+  //     }
+  //   );
+  // } else {
+  //   res.json({
+  //     status: 4,
+  //     message: "Provide Category Id in params and coverimage in base64",
+  //     data: true,
+  //   });
+  // }
+};
+
+const deleteCategory = (req, res) => {
   let id = req.query.id;
-  if (req.body.coverimage && id) {
-    let base64Image = req.body.coverimage.split(";base64,").pop();
-    fs.writeFile(
-      `uploads/categories/${req.body.name}.png`,
-      base64Image,
-      { encoding: "base64" },
-      function (err) {
-        console.log(err);
-      }
-    );
+  if (id) {
     Category.findOneAndUpdate(
-      id,
-      { coverimage: req.body.coverimage },
+      { _id: id },
+      { isdeleted: true },
       { new: true },
-      (err, category) => {
-        console.log(category);
-        if (!err) {
+      (err, product) => {
+        if (product) {
           res.json({
             status: 1,
-            message: "Category Coverimage Updated",
+            message: "Product Image deleted",
             data: true,
           });
         } else {
@@ -116,33 +149,6 @@ const updateCategoryCoverImage = async (req, res) => {
         }
       }
     );
-  } else {
-    res.json({
-      status: 4,
-      message: "Provide Category Id in params and coverimage in base64",
-      data: true,
-    });
-  }
-};
-
-const deleteCategory = (req, res) => {
-  let id = req.query.id;
-  if (id) {
-    Category.findOneAndDelete({ _id: id }, (err) => {
-      if (!err) {
-        res.json({
-          status: 1,
-          message: "Category Deleted",
-          data: true,
-        });
-      } else {
-        res.json({
-          status: 4,
-          message: `${err}`,
-          data: true,
-        });
-      }
-    });
   } else {
     res.json({
       status: 4,

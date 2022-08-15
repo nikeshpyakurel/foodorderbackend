@@ -81,7 +81,6 @@ const userLogin = async (req, res) => {
 };
 
 const userRegister = async (req, res) => {
-  console.log(req.body);
   const saltRounds = 10;
   const body = req.body;
   const hashedpassword = await bcrypt.hash(body.password, saltRounds);
@@ -139,14 +138,12 @@ const userRegister = async (req, res) => {
 
 const updateUserProfileImage = async (req, res) => {
   let id = req.query.id;
-  console.log(id);
-  console.log(req.body.profileimage);
   var date = new Date();
   if (req.body.profileimage && id) {
     try {
       let base64Image = req.body.profileimage.split(";base64,").pop();
       fs.writeFile(
-        `./public/assets/${req.query.id}-profileimage${date}.png`,
+        `uploads/${req.query.id}-profileimage.png`,
         base64Image,
         { encoding: "base64" },
         function (err) {
@@ -156,7 +153,7 @@ const updateUserProfileImage = async (req, res) => {
       Users.findOneAndUpdate(
         { _id: id },
         {
-          profileimage: `./public/assets/${req.query.id}-profileimage${date}.png`,
+          profileimage: `/uploads/${req.query.id}-profileimage.png`,
         },
         { new: true },
         (err, user) => {
@@ -227,6 +224,40 @@ const updateUserDetails = async (req, res) => {
   }
 };
 
+const updateDeviceToken=async(req,res)=>{
+  let id = req.query.id;
+  let token = req.query.token;
+  if(id && token){
+    Users.findOneAndUpdate(
+      id,
+      { devicetoken: token },
+      { new: true },
+      (err, category) => {
+        console.log(category);
+        if (!err) {
+          res.json({
+            status: 1,
+            message: "device token updated",
+            data: true
+          });
+        } else {
+          res.json({
+            status: 4,
+            message: err.message,
+            data: false
+          });
+        }
+      });
+  }else{
+    res.send({
+      status: 4,
+      message: "Send User Id and token as query params",
+      data: false,
+    });
+  }
+
+}
+
 module.exports = {
   userLogin,
   userRegister,
@@ -234,4 +265,5 @@ module.exports = {
   getUsers,
   getUsersById,
   updateUserDetails,
+  updateDeviceToken
 };

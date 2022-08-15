@@ -22,7 +22,7 @@ const addProduct = (req, res) => {
     let base64Image = product.image.split(";base64,").pop();
     if (product.title && product.price && product.categoryid) {
       fs.writeFile(
-        `./public/assets/${product.title}-product${new Date()}.png`,
+        `uploads/${product.title.name.replace(" ", '-').toLowerCase()}-product.png`,
         base64Image,
         { encoding: "base64" },
         function (err) {
@@ -31,7 +31,7 @@ const addProduct = (req, res) => {
       );
       const toAddProduct = new Product({
         title: product.title,
-        image: product.image ? `public/assets/${product.title}-product${new Date()}.png` : "",
+        image: product.image ? `/uploads/${product.title.name.replace(" ", '-').toLowerCase()}-product.png` : "",
         description: product.desciption ? product.desciption : "",
         price: product.price,
         categoryid: product.categoryid,
@@ -92,48 +92,48 @@ const deleteProduct = (req, res) => {
   }
 };
 
-const updateProductImage = async (req, res) => {
-  let id = req.query.id;
-  if (req.body.image && id) {
-    let base64Image = req.body.image.split(";base64,").pop();
-    fs.writeFile(
-      `./public/assets/${product.title}-product${new Date()}.png`,
-      base64Image,
-      { encoding: "base64" },
-      function (err) {
-        console.log(err);
-        if (err == null) {
-          Product.findOneAndUpdate(
-            { _id: id },
-            { image: `public/assets/${product.title}-product${new Date()}.png` },
-            { new: true },
-            (err, product) => {
-              if (product) {
-                res.json({
-                  status: 1,
-                  message: "Product Image Updated",
-                  data: true,
-                });
-              } else {
-                res.json({
-                  status: 4,
-                  message: err.message,
-                  data: false,
-                });
-              }
-            }
-          );
-        }
-      }
-    );
-  } else {
-    res.json({
-      status: 4,
-      message: "Provide Product Id in params and image in base64 format",
-      data: false,
-    });
-  }
-};
+// const updateProductImage = async (req, res) => {
+//   let id = req.query.id;
+//   if (req.body.image && id) {
+//     let base64Image = req.body.image.split(";base64,").pop();
+//     fs.writeFile(
+//       `./public/assets/${product.title}-product${new Date()}.png`,
+//       base64Image,
+//       { encoding: "base64" },
+//       function (err) {
+//         console.log(err);
+//         if (err == null) {
+//           Product.findOneAndUpdate(
+//             { _id: id },
+//             { image: `public/assets/${product.title}-product${new Date()}.png` },
+//             { new: true },
+//             (err, product) => {
+//               if (product) {
+//                 res.json({
+//                   status: 1,
+//                   message: "Product Image Updated",
+//                   data: true,
+//                 });
+//               } else {
+//                 res.json({
+//                   status: 4,
+//                   message: err.message,
+//                   data: false,
+//                 });
+//               }
+//             }
+//           );
+//         }
+//       }
+//     );
+//   } else {
+//     res.json({
+//       status: 4,
+//       message: "Provide Product Id in params and image in base64 format",
+//       data: false,
+//     });
+//   }
+// };
 
 const updateProductAvailableStatus = async (req, res) => {
   let id = req.query.id;

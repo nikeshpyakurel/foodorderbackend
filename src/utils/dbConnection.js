@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 function connect() {
   mongoose
-    .connect("mongodb+srv://pieonion:db%40pieonion@pieonion.rylv00g.mongodb.net/pieonion", {
+    .connect("mongodb+srv://pieonion:db%40pieonion@pieonion.rylv00g.mongodb.net/pieonion2", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
